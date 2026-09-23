@@ -67,7 +67,7 @@ const create = () => {
 
          await auth.currentUser?.getIdToken
 
-         router.replace("/dasboard")
+         router.replace("/dashboard")
       }
  
     } catch (err: unknown) {
