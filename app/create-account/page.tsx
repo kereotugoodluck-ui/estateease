@@ -6,6 +6,7 @@ import {
   getRedirectResult,
   signInWithRedirect,
   signInWithPopup,
+  // getIdToken,
 } from "firebase/auth";
 import { auth, googleProvider } from "@/lib/firebase";  
 
@@ -59,17 +60,16 @@ const create = () => {
     setError(null);
     isLoading(true);
 
-    try {
-      if (useRedirectFlow) {
-        await signInWithRedirect(auth, googleProvider);
+    try{
+      const result = await signInWithPopup(auth, googleProvider)
+      if (result.user) {
+        console.log(result.user.email)
 
-      } else {
-        const result = await signInWithPopup(auth, googleProvider);
-        if (result?.user) {
-          router.push("/dashboard");
-        }
-        isLoading(false);
+         await auth.currentUser?.getIdToken
+
+         router.replace("/dasboard")
       }
+ 
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "unable to connect with google";
       setError(message);
